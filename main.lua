@@ -1,6 +1,6 @@
 -- проверка на целостность числа
 local function integer_or_not()
-    if state_detail.detail % 1 ~= 0 then
+    if detail % 1 ~= 0 then
         return false
     else
         return true
@@ -57,7 +57,6 @@ local function step3_division_by_3()
             print("Конечно число = ", detail)
         end
         if status == false then
-            print(status)
             if status ~= true then
                 print("система сломалась, если хотите продолжить, нажмите любую клавишу")
                 io.read() 
