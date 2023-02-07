@@ -12,6 +12,7 @@ local function start()
         while true do
             print("Введите число")
             status = true
+            init = os.time()
             detail = io.read()
             coroutine.yield()
         end
@@ -23,7 +24,10 @@ local function step1_number_or_not()
     return coroutine.create(function()
         while true do
             coroutine.resume(starts)
-            if ((tonumber(detail))) then
+            print(os.difftime(os.time(),init))
+            if (os.difftime(os.time(),init) >= 10) then
+                status = false
+            elseif ((tonumber(detail))) then
                 status = true
             else
                 status = false
@@ -38,6 +42,9 @@ local function step2_sqrt()
     return coroutine.create(function()
         while true do
             coroutine.resume(step1)
+            if (os.difftime(os.time(),init) == 10) then
+                status = false
+            end
             if status == true then
                 detail = math.sqrt(detail)
                 status = integer_or_not()
@@ -51,6 +58,9 @@ end
 local function step3_division_by_3()
     while true do
         coroutine.resume(step2)
+        if (os.difftime(os.time(),init) == 10) then
+            status = false
+        end
         if status == true then
             detail = detail / 3
             status = integer_or_not()
@@ -59,7 +69,7 @@ local function step3_division_by_3()
         if status == false then
             if status ~= true then
                 print("система сломалась, если хотите продолжить, нажмите любую клавишу")
-                io.read() 
+                io.read()
         end
         end
     end
@@ -74,3 +84,11 @@ step1 = step1_number_or_not()
 step2 = step2_sqrt()
 
 step3_division_by_3()
+
+require "timer1"
+
+local function listener( event )
+    print( "listener called" )
+end
+  
+timer1 = timer.performWithDelay( 2000, listener )
