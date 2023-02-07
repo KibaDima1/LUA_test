@@ -1,13 +1,3 @@
-local function start()
-    return coroutine.create(function()
-        while true do
-            print("Введите число")
-            state_detail = {state = true, detail = io.read()}
-            coroutine.yield()
-        end
-    end)
-end
-
 -- проверка на целостность числа
 local function integer_or_not()
     if state_detail.detail % 1 ~= 0 then
@@ -17,19 +7,28 @@ local function integer_or_not()
     end
 end
 
+local function start()
+    return coroutine.create(function()
+        while true do
+            print("Введите число")
+            status = true
+            detail = io.read()
+            coroutine.yield()
+        end
+    end)
+end
+
 -- шаг первый (проверка на то, являются ли введёные пользователем данные числом)
 local function step1_number_or_not()
     return coroutine.create(function()
         while true do
-            local status
             coroutine.resume(starts)
-            if ((tonumber(state_detail.detail))) then
+            if ((tonumber(detail))) then
                 status = true
             else
                 status = false
             end
-            print(status)
-            coroutine.yield(status)
+            coroutine.yield()
         end
     end)
 end
@@ -38,13 +37,12 @@ end
 local function step2_sqrt()
     return coroutine.create(function()
         while true do
-            local status = coroutine.resume(step1)
-            print(status)
+            coroutine.resume(step1)
             if status == true then
-                state_detail.detail = math.sqrt(state_detail.detail)
+                detail = math.sqrt(detail)
                 status = integer_or_not()
             end
-            coroutine.yield(status)
+            coroutine.yield()
         end
     end)
 end
@@ -52,16 +50,18 @@ end
 -- шаг третий(деление на 3)
 local function step3_division_by_3()
     while true do
-        local status = coroutine.resume(step2)
-        print("step3")
+        coroutine.resume(step2)
         if status == true then
-            state_detail.detail = state_detail.detail / 3
+            detail = detail / 3
             status = integer_or_not()
+            print("Конечно число = ", detail)
+        end
+        if status == false then
             print(status)
             if status ~= true then
                 print("система сломалась, если хотите продолжить, нажмите любую клавишу")
                 io.read() 
-            end
+        end
         end
     end
 end
