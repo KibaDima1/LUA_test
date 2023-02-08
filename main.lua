@@ -84,11 +84,3 @@ step1 = step1_number_or_not()
 step2 = step2_sqrt()
 
 step3_division_by_3()
-
-require "timer1"
-
-local function listener( event )
-    print( "listener called" )
-end
-  
-timer1 = timer.performWithDelay( 2000, listener )
